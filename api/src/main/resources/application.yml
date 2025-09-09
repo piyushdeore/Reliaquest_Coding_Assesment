@@ -1,2 +1,56 @@
-spring.application.name: employee-api
-server.port: 8111
+spring:
+  application:
+    name: employee-api
+  cloud:
+    openfeign:
+      client:
+        config:
+          employee-api:
+            connect-timeout: 5000
+            read-timeout: 10000
+            logger-level: basic
+
+
+server:
+  port: 8111
+
+employee:
+  api:
+    base-url: http://localhost:8112/api/v1/employee
+    retry:
+      max-attempts: 3
+      initial-interval-seconds: 2
+      multiplier: 2.0
+      jitter: 0.5
+      max-interval-seconds: 30
+
+feign:
+  client:
+    config:
+      employee-api:
+        connect-timeout: 5000
+        read-timeout: 10000
+        logger-level: basic
+        error-decoder: com.reliaquest.api.config.FeignErrorDecoder
+        retryer: com.reliaquest.api.config.FeignRetryConfiguration
+
+resilience4j:
+  retry:
+    instances:
+      employee-api:
+        max-attempts: 3
+        wait-duration: 2s
+        exponential-backoff-multiplier: 2.0
+        retry-exceptions:
+          - feign.RetryableException
+          - java.io.IOException
+          - java.net.SocketTimeoutException
+          - com.reliaquest.api.exception.TooManyRequestsException
+          - com.reliaquest.api.exception.EmployeeServiceException
+
+
+
+
+
+
+

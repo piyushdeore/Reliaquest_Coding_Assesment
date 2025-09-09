@@ -3,9 +3,23 @@ plugins {
 }
 
 dependencies {
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    implementation 'org.springframework.boot:spring-boot-starter-web:3.3.4'
+    implementation 'org.springframework.boot:spring-boot-starter-validation:3.3.4'
+
+    // OpenFeign
+    implementation 'org.springframework.cloud:spring-cloud-starter-openfeign:4.1.3'
+
+    // Resilience4j
+    implementation 'io.github.resilience4j:resilience4j-retry:2.2.0'
+    implementation 'io.github.resilience4j:resilience4j-spring-boot3:2.2.0'
+    implementation 'io.github.resilience4j:resilience4j-feign:2.2.0'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test:3.3.4'
+    implementation 'jakarta.annotation:jakarta.annotation-api:2.1.1'
+
 }
 
 springBoot {
     mainClass = 'com.reliaquest.api.ApiApplication'
 }
+
